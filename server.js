@@ -17,8 +17,8 @@ function prepareDb(sqlDb) {
     this.sql = sql;
   }
   Statement.prototype = {
-    get(params) {
-      params = params || [];
+    get() {
+      let params = arguments.length === 0 ? [] : (arguments.length === 1 ? arguments[0] : Array.from(arguments));
       if (!Array.isArray(params)) params = [params];
       try {
         const stmt = sqlDb.prepare(this.sql);
@@ -29,8 +29,8 @@ function prepareDb(sqlDb) {
         return row;
       } catch(e) { return undefined; }
     },
-    all(params) {
-      params = params || [];
+    all() {
+      let params = arguments.length === 0 ? [] : (arguments.length === 1 ? arguments[0] : Array.from(arguments));
       if (!Array.isArray(params)) params = [params];
       try {
         const stmt = sqlDb.prepare(this.sql);
@@ -41,8 +41,8 @@ function prepareDb(sqlDb) {
         return rows;
       } catch(e) { return []; }
     },
-    run(params) {
-      params = params || [];
+    run() {
+      let params = arguments.length === 0 ? [] : (arguments.length === 1 ? arguments[0] : Array.from(arguments));
       if (!Array.isArray(params)) params = [params];
       try {
         sqlDb.run(this.sql, params);
