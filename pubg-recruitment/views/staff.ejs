@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ckb">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ستاف - MASK TEAM</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="particles"></div>
+  <canvas id="scene-3d"></canvas>
+  <div class="battle-bg"><div class="battle-grid"></div><div class="scan-line"></div></div>
+  <div class="nav-overlay" id="navOverlay"></div>
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="logo"><img src="/images/Mask.svg" alt="MASK TEAM" height="45"></a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links" id="navLinks">
+        <a href="/">سەرەکی</a>
+        <a href="/calculate">📊 حسابکەر</a>
+        <a href="/videos">🎬 ڤیدیۆ</a>
+        <a href="/apply">داواکاری بنێرە</a>
+        <a href="/status">دۆخی ببینە</a>
+        <a href="/staff" class="active">ستاف</a>
+        <a href="/login" class="nav-admin">بەڕێوەبەر</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="results-page-section">
+    <div class="container" style="max-width:800px;">
+      <div style="text-align:center;margin-bottom:40px;">
+        <div class="results-badge" style="margin-bottom:8px;">MASK TEAM</div>
+        <h1 style="font-family:var(--font-display);font-size:2rem;margin-bottom:8px;">تیمی <span class="accent">ستاف</span></h1>
+        <p style="color:var(--text-secondary);">بەڕێوەبەرایەتی و پەرەپێدەری تیمەکە</p>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;">
+        <!-- Mam Surchi - Owner -->
+        <div class="staff-card tilt-3d-glow" style="background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:35px 25px;text-align:center;position:relative;overflow:hidden;">
+          <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--accent),transparent);"></div>
+          <div style="width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,rgba(245,166,35,0.2),rgba(231,76,60,0.1));margin:0 auto 18px;display:flex;align-items:center;justify-content:center;border:2px solid rgba(245,166,35,0.3);">
+            <span style="font-size:2.5rem;">👑</span>
+          </div>
+          <h2 style="font-family:var(--font-display);font-size:1.3rem;color:var(--accent);margin-bottom:4px;">Mam Surchi</h2>
+          <div style="display:inline-block;padding:4px 16px;background:rgba(245,166,35,0.12);border:1px solid rgba(245,166,35,0.25);border-radius:20px;font-size:0.8rem;color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:14px;">Owner</div>
+          <p style="color:var(--text-secondary);font-size:0.9rem;">خاوەن و دامەزرێنەری MASK TEAM. بەڕێوەبەری گشتی و سەرپەرشتیاری تیمەکە.</p>
+        </div>
+
+        <!-- Havrest - Developer -->
+        <div class="staff-card tilt-3d-glow" style="background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:35px 25px;text-align:center;position:relative;overflow:hidden;">
+          <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,#3498db,transparent);"></div>
+          <div style="width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,rgba(52,152,219,0.2),rgba(52,152,219,0.05));margin:0 auto 18px;display:flex;align-items:center;justify-content:center;border:2px solid rgba(52,152,219,0.3);">
+            <span style="font-size:2.5rem;">💻</span>
+          </div>
+          <h2 style="font-family:var(--font-display);font-size:1.3rem;color:#3498db;margin-bottom:4px;">Havrest</h2>
+          <div style="display:inline-block;padding:4px 16px;background:rgba(52,152,219,0.12);border:1px solid rgba(52,152,219,0.25);border-radius:20px;font-size:0.8rem;color:#3498db;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:14px;">Developer</div>
+          <p style="color:var(--text-secondary);font-size:0.9rem;">پەرەپێدەری وێبسایت و سیستەمەکانی MASK TEAM. بەرپرسی تەکنۆلۆژیا و دیزاین.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer"><div class="container"><p>&copy; 2026 MASK TEAM. All rights reserved.</p></div></footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="/js/main.js"></script>
+</body>
+</html>

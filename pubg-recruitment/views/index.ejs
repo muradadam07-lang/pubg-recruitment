@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ckb">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>پابجی ڕیکرویت - پێوەندی بە تیپەکەمان بکە</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="particles"></div>
+  <canvas id="scene-3d"></canvas>
+  <div class="nav-overlay" id="navOverlay"></div>
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="logo">
+        <img src="/images/Mask.svg" alt="MASK TEAM" height="45">
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links" id="navLinks">
+        <a href="/" class="active">سەرەکی</a>
+        <a href="/calculate">📊 حسابکەر</a>
+        <a href="/videos">🎬 ڤیدیۆ</a>
+        <a href="/apply">داواکاری بنێرە</a>
+        <a href="/status">دۆخی ببینە</a>
+        <a href="/staff">ستاف</a>
+        <a href="/login" class="nav-admin">بەڕێوەبەر</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content perspective-container">
+        <div class="hero-badge">ڕیکرووتی تیپی پرۆفیشناڵ ٢٠٢٦</div>
+        <h1 class="hero-title">
+          <span class="text-line">داهاتووی</span>
+          <span class="text-line accent">شەڕگە</span>
+          <span class="text-line">چاوەڕێی تۆیە</span>
+        </h1>
+        <p class="hero-desc">ئایا ئامادەیت بۆ بردنەوەی پاڵەوانێتییەکان؟ پێوەندی بە تیپی پرۆفیشناڵمان بکە و لە پاڵەوانێتی جیهانییەکاندا بەشداربە. بە دوای باشترین یاریزاندایین.</p>
+        <div class="hero-stats">
+          <div class="stat">
+            <span class="stat-num" data-target="150">٠</span>
+            <span class="stat-label">ڕیکرووتکراوە</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num" data-target="12">٠</span>
+            <span class="stat-label">بردنەوەی پاڵەوانێتی</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num" data-target="500">٠</span>
+            <span class="stat-label">یاری کراوە</span>
+          </div>
+        </div>
+        <div class="hero-actions">
+          <a href="/apply" class="btn btn-primary tilt-3d">
+            <span>سیڤییەکەت بنێرە</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="/status" class="btn btn-secondary tilt-3d">دۆخی داواکاری ببینە</a>
+        </div>
+      </div>
+      <div class="hero-visual float-3d">
+        <div class="target-circle">
+          <div class="hero-ring"></div>
+        </div>
+        <div class="crosshair"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="container">
+      <h2 class="section-title">بۆچی پێوەندی بکەیت <span class="accent">بە ئێمە؟</span></h2>
+      <div class="features-grid">
+        <div class="feature-card tilt-3d-glow">
+          <div class="feature-icon">🏆</div>
+          <h3>پاڵەوانێتی پرۆفیشناڵ</h3>
+          <p>بەشداری بکە لە PMPL و PMCO و پاڵەوانێتی نێودەوڵەتییەکان بە پشتیوانی تیپەکە.</p>
+        </div>
+        <div class="feature-card tilt-3d-glow">
+          <div class="feature-icon">💰</div>
+          <h3>مووچە و سپۆنسەری</h3>
+          <p>مووچەی مانگانە + بەشی بردنەوەکان + سپۆنسەری لە براندە ناسراوەکانی یاری.</p>
+        </div>
+        <div class="feature-card tilt-3d-glow">
+          <div class="feature-icon">🎯</div>
+          <h3>ڕاهێنەری پرۆفیشناڵ</h3>
+          <p>IGL و ڕاهێنەری تایبەت بۆ گەیشتن بە باشترین ئاستی یاریکردنت.</p>
+        </div>
+        <div class="feature-card tilt-3d-glow">
+          <div class="feature-icon">🖥️</div>
+          <h3>شوێنی پێشکەوتوو</h3>
+          <p>ماڵی یاری بە باشترین PC و سیستەمی ستریمینگ و سێرڤەری تایبەت.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="roles">
+    <div class="container">
+      <h2 class="section-title">بەدوای ئەم <span class="accent">ڕۆڵانەدا دەگەڕێین</span></h2>
+      <div class="roles-grid">
+        <div class="role-card tilt-3d-glow">
+          <h3>هێرشبەر</h3>
+          <p>یاریزانی پێشەوە بە ئامانجی تیژ و کاردانەوەی خێرا</p>
+          <span class="role-req">Conqueror + KD ٤+</span>
+        </div>
+        <div class="role-card tilt-3d-glow">
+          <h3>پشتیوان</h3>
+          <p>یاریزانی تیپ، شارەزای چەک و جوڵە</p>
+          <span class="role-req">Ace + KD ٣+</span>
+        </div>
+        <div class="role-card tilt-3d-glow">
+          <h3>سنایپەر</h3>
+          <p>شارەزای مەودای دوور و کوشتنی دوژمن</p>
+          <span class="role-req">Conqueror + KD ٣.٥+</span>
+        </div>
+        <div class="role-card tilt-3d-glow">
+          <h3>IGL</h3>
+          <p>مێشکی ستراتیجی، فەرماندەری تیپ</p>
+          <span class="role-req">Ace + ئەزموونی ڕابەری</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <p>© ٢٠٢٦ PUBG RECRUIT. هەموو مافەکان پارێزراون. پەیوەندی بە Kraftonەوە نییە.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="/js/main.js"></script>
+</body>
+</html>

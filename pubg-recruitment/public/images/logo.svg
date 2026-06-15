@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 60" width="220" height="60">
+  <defs>
+    <linearGradient id="lg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f5a623"/>
+      <stop offset="100%" style="stop-color:#e74c3c"/>
+    </linearGradient>
+    <linearGradient id="lg2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.2"/>
+      <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0"/>
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#f5a623" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Shield -->
+  <g transform="translate(2, 5)">
+    <path d="M24 3 L36 3 L36 5 L45 10 L45 30 Q45 42 36 47 L24 52 L12 47 Q3 42 3 30 L3 10 L12 5 L12 3 Z"
+          fill="url(#lg)" filter="url(#shadow)"/>
+    <path d="M24 5 L34 5 L34 7 L43 12 L43 30 Q43 40 34 45 L24 49 L14 45 Q5 40 5 30 L5 12 L14 7 L14 5 Z"
+          fill="none" stroke="url(#lg2)" stroke-width="1"/>
+    <!-- Crosshair inside shield -->
+    <circle cx="24" cy="27" r="8" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.9"/>
+    <line x1="24" y1="15" x2="24" y2="20" stroke="#fff" stroke-width="1.5" opacity="0.9"/>
+    <line x1="24" y1="34" x2="24" y2="39" stroke="#fff" stroke-width="1.5" opacity="0.9"/>
+    <line x1="12" y1="27" x2="17" y2="27" stroke="#fff" stroke-width="1.5" opacity="0.9"/>
+    <line x1="31" y1="27" x2="36" y2="27" stroke="#fff" stroke-width="1.5" opacity="0.9"/>
+    <circle cx="24" cy="27" r="2" fill="#fff" opacity="0.9"/>
+  </g>
+
+  <!-- PUBG text -->
+  <text x="56" y="30" font-family="Arial Black, Impact, sans-serif" font-size="22" font-weight="900"
+        fill="url(#lg)" filter="url(#shadow)" letter-spacing="3">PUBG</text>
+
+  <!-- RECRUIT text -->
+  <text x="56" y="48" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="700"
+        fill="#f0f0f0" letter-spacing="4" opacity="0.9">RECRUIT</text>
+
+  <!-- Small accent line -->
+  <line x1="56" y1="38" x2="130" y2="38" stroke="url(#lg)" stroke-width="1.5" opacity="0.4"/>
+</svg>

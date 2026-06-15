@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ckb">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= player.ign %> - وردەکاری یاریزان</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-page">
+  <div class="particles"></div>
+  <div class="nav-overlay" id="navOverlay"></div>
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="logo">
+        <img src="/images/Mask.svg" alt="MASK TEAM" height="45">
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links" id="navLinks">
+        <span class="admin-greeting">بەخێربێیت، <%= adminName %></span>
+        <a href="/dashboard">داواکارییەکان</a>
+        <a href="/dashboard/tournaments" class="nav-results">🏆 تورنمنتەکان</a>
+        <a href="/dashboard" class="btn-logout">→ گەڕانەوە</a>
+        <a href="/logout" class="btn-logout">دەرچوون</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="player-detail">
+    <div class="container">
+      <div class="detail-grid">
+        <div class="detail-main perspective-container">
+          <div class="detail-header">
+            <div>
+              <h1><%= player.ign %></h1>
+              <p class="detail-meta"><%= player.name %> • <%= player.email %></p>
+            </div>
+            <span class="badge badge-<%= player.status %>"><%= player.status === 'pending' ? 'چاوەڕوانی' : player.status === 'reviewed' ? 'پشکنین کراوە' : player.status === 'accepted' ? 'پەسەند کراوە' : 'ڕەت کراوە' %></span>
+          </div>
+
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="info-label">تەلەفون</span>
+              <span class="info-value"><%= player.phone %></span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">ئایدی پابجی</span>
+              <span class="info-value"><%= player.pubg_id %></span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">ڕۆڵ</span>
+              <span class="info-value"><%= player.role %></span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">ئاست</span>
+              <span class="info-value"><%= player.tier %></span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">ڕێژەی KD</span>
+              <span class="info-value"><%= player.kd || 'N/A' %></span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">بردنەوەکان</span>
+              <span class="info-value"><%= player.wins || 'N/A' %></span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">ئەزموون</span>
+              <span class="info-value"><%= player.experience || 'نییە' %></span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">داواکاری نێردرا</span>
+              <span class="info-value"><%= new Date(player.created_at).toLocaleDateString('ckb') %></span>
+            </div>
+          </div>
+
+          <% if (player.about) { %>
+            <div class="about-section">
+              <h3>دەربارەی یاریزان</h3>
+              <p><%= player.about %></p>
+            </div>
+          <% } %>
+
+          <% if (player.cv_path) { %>
+            <a href="/uploads/<%= player.cv_path %>" target="_blank" class="btn btn-secondary tilt-3d">📄 سیڤی ببینە</a>
+          <% } %>
+        </div>
+
+        <div class="detail-sidebar">
+          <div class="status-card tilt-3d-glow">
+            <h3>نوێکردنەوەی دۆخ</h3>
+            <form action="/dashboard/player/<%= player.id %>/status" method="POST">
+              <select name="status" class="status-select">
+                <option value="pending" <%= player.status === 'pending' ? 'selected' : '' %>>چاوەڕوانی</option>
+                <option value="reviewed" <%= player.status === 'reviewed' ? 'selected' : '' %>>پشکنین کراوە</option>
+                <option value="accepted" <%= player.status === 'accepted' ? 'selected' : '' %>>پەسەند کراوە</option>
+                <option value="rejected" <%= player.status === 'rejected' ? 'selected' : '' %>>ڕەت کراوە</option>
+              </select>
+              <button type="submit" class="btn btn-primary btn-full">نوێکردنەوە</button>
+            </form>
+          </div>
+
+          <div class="reply-card-sidebar tilt-3d-glow">
+            <h3>نامە بۆ یاریزان بنێرە</h3>
+            <form action="/dashboard/player/<%= player.id %>/reply" method="POST">
+              <textarea name="message" rows="4" placeholder="نامەکەت بۆ <%= player.ign %> بنووسە..." required></textarea>
+              <button type="submit" class="btn btn-primary btn-full">نامەکە بنێرە</button>
+            </form>
+          </div>
+
+          <% if (replies.length > 0) { %>
+            <div class="replies-history">
+              <h3>مێژووی نامەکان</h3>
+              <% replies.forEach(function(r) { %>
+                <div class="reply-item">
+                  <div class="reply-head">
+                    <strong><%= r.admin_name %></strong>
+                    <span><%= new Date(r.created_at).toLocaleDateString('ckb') %></span>
+                  </div>
+                  <p><%= r.message %></p>
+                </div>
+              <% }); %>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="/js/main.js"></script>
+</body>
+</html>

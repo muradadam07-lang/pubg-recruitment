@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ckb">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>حسابکەری ئەنجام - PUBG RECRUIT</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="calculator-page">
+  <div class="particles"></div>
+  <canvas id="scene-3d"></canvas>
+  <div class="battle-bg"><div class="battle-grid"></div><div class="scan-line"></div></div>
+  <div class="nav-overlay" id="navOverlay"></div>
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="logo"><img src="/images/Mask.svg" alt="MASK TEAM" height="45"></a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links" id="navLinks">
+        <a href="/">سەرەکی</a>
+        <a href="/calculate" class="active">📊 حسابکەر</a>
+        <a href="/videos">🎬 ڤیدیۆ</a>
+        <a href="/apply">داواکاری بنێرە</a>
+        <a href="/status">دۆخی ببینە</a>
+        <a href="/staff">ستاف</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="results-page-section">
+    <div class="container">
+      <div style="max-width:860px;margin:0 auto;">
+
+        <!-- Hero with Logo -->
+        <div class="calc-hero">
+          <div class="logo-big">
+            <img src="/images/logo.svg" alt="PUBG RECRUIT" style="width:200px;height:auto;">
+          </div>
+          <div class="results-badge" style="margin-bottom:12px;">PUBG TOURNAMENT CALCULATOR</div>
+          <h1>حسابکەری <span class="accent">ئەنجامەکان</span></h1>
+          <p>داونیشانی ئەنجامەکان بکە و خاڵەکانت ببینە - خۆکارانە حساب دەکرێت</p>
+        </div>
+
+        <!-- Scoring Strip -->
+        <div style="background:rgba(26,26,40,0.6);backdrop-filter:blur(10px);border:1px solid var(--border);border-radius:12px;padding:14px 20px;margin-bottom:24px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center;font-size:0.85rem;">
+          <span style="display:flex;align-items:center;gap:4px;">🥇 <span style="color:var(--text-secondary);">1st</span> <strong style="color:var(--accent);">10pts</strong></span>
+          <span style="display:flex;align-items:center;gap:4px;">🥈 <span style="color:var(--text-secondary);">2nd</span> <strong style="color:var(--accent);">6pts</strong></span>
+          <span style="display:flex;align-items:center;gap:4px;">🥉 <span style="color:var(--text-secondary);">3rd</span> <strong style="color:var(--accent);">5pts</strong></span>
+          <span style="display:flex;align-items:center;gap:4px;color:var(--text-secondary);">4th <strong style="color:var(--accent);">4</strong></span>
+          <span style="display:flex;align-items:center;gap:4px;color:var(--text-secondary);">5th <strong style="color:var(--accent);">3</strong></span>
+          <span style="display:flex;align-items:center;gap:4px;color:var(--text-secondary);">6th <strong style="color:var(--accent);">2</strong></span>
+          <span style="display:flex;align-items:center;gap:4px;color:var(--text-secondary);">7th <strong style="color:var(--accent);">1</strong></span>
+          <span style="display:flex;align-items:center;gap:4px;color:var(--text-secondary);">8th <strong style="color:var(--accent);">1</strong></span>
+          <span style="display:flex;align-items:center;gap:4px;">💀 <span style="color:var(--text-secondary);">Kill</span> <strong style="color:var(--accent);">1pt</strong></span>
+        </div>
+
+        <!-- Input Form -->
+        <div class="form-container calc-form-glass" style="padding:30px;margin-bottom:30px;">
+          <form action="/calculate" method="POST">
+            <div class="form-group">
+              <label style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
+                <span>داونیشانی ئەنجامەکان</span>
+                <span style="font-size:0.8rem;color:var(--text-secondary);font-weight:400;">فۆرمات: IGN (TOP#) (TOP#) kill (K1-K2)</span>
+              </label>
+              <textarea name="data" rows="8" required style="font-family:monospace;font-size:0.9rem;background:rgba(0,0,0,0.3);"><%= typeof data !== 'undefined' ? data : 'K88esp (TOP1) (TOP11) kill (13-3)\nICTFepic (TOP2) (TOP3) kill (17-4)\nMASKclub (TOP3) (TOP7) kill (14-10)\nMASKitz (TOP4) (TOP2) kill (3-16)\nICTFg (TOP6) (TOP1) kill (2-16)\nKV (TOP24) (TOP4) kill (0-1)\nMASKice (TOP16) (TOP5) kill (0-6)' %></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-full tilt-3d" style="padding:16px 32px;font-size:1.1rem;">
+              <span>📊 حسابکردن</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- RESULTS -->
+        <% if (typeof result !== 'undefined' && result) { %>
+          <div class="leaderboard-section">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+              <h2 class="section-subtitle" style="margin:0;">🏆 <span class="accent">پلەبۆرد</span></h2>
+              <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                <button onclick="downloadAsImage()" class="btn btn-secondary tilt-3d" style="padding:8px 18px;font-size:0.8rem;">📸 وەک وێنە دایبگرە</button>
+                <div class="total-score-badge" style="background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:10px 28px;text-align:center;">
+                  <div class="score-inner">
+                    <div style="font-size:0.7rem;color:var(--text-secondary);letter-spacing:1px;">کۆی گشتی خاڵ</div>
+                    <div style="font-family:var(--font-display);font-size:2rem;font-weight:900;color:var(--accent);"><%= result.totalScore %></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <% if (result.leaderboard.length > 0) { %>
+            <div id="leaderboard-capture" class="liqui-table-wrap">
+              <table class="liqui-table">
+                <thead>
+                  <tr>
+                    <th class="col-rank">#</th>
+                    <th class="col-team">تیم</th>
+                    <% result.leaderboard[0].games.forEach(function(g, gi) { %>
+                      <th class="col-game">یاری <%= gi + 1 %></th>
+                    <% }); %>
+                    <th class="col-kills">💀</th>
+                    <th class="col-total">خاڵ</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% result.leaderboard.forEach(function(t, i) { %>
+                    <% var maxPts = Math.max(...result.leaderboard.map(x=>x.totalPoints)); %>
+                    <tr class="liqui-row <%= i === 0 ? 'row-gold' : i === 1 ? 'row-silver' : i === 2 ? 'row-bronze' : '' %>">
+                      <td class="col-rank">
+                        <span class="rank-num <%= i < 3 ? 'rank-top' : '' %>"><%= i + 1 %></span>
+                      </td>
+                      <td class="col-team">
+                        <div class="team-cell">
+                          <div class="team-name"><%= t.name %></div>
+                          <div class="team-sub">
+                            <%= t.totalKills %> kills • Best #<%= t.bestPlace %>
+                          </div>
+                        </div>
+                      </td>
+                      <% t.games.forEach(function(g) { %>
+                        <td class="col-game">
+                          <div class="game-result">
+                            <span class="g-placement p-<%= g.placement %>"><%= g.placement %>.</span>
+                            <span class="g-kills">+<%= g.kills %></span>
+                            <span class="g-pts"><%= g.points %></span>
+                          </div>
+                        </td>
+                      <% }); %>
+                      <td class="col-kills">
+                        <span class="kills-num"><%= t.totalKills %></span>
+                      </td>
+                      <td class="col-total">
+                        <span class="pts-num <%= i === 0 ? 'pts-first' : '' %>"><%= t.totalPoints %></span>
+                        <div class="bar-wrap"><div class="bar-fill" style="width:<%= (t.totalPoints / maxPts * 100) %>%"></div></div>
+                      </td>
+                    </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+            <% } else { %>
+              <p style="text-align:center;color:var(--text-secondary);padding:30px 0;">هیچ تیمێک نەدۆزرایەوە. دەقەکە ڕاست بکەوە و هەوڵبدەوە.</p>
+            <% } %>
+          </div>
+        <% } %>
+
+        <!-- Bottom CTA -->
+        <div style="text-align:center;margin-top:30px;">
+          <a href="/dashboard/tournaments" class="btn btn-secondary tilt-3d" style="font-size:0.85rem;">🔐 چوونەژوورەوە بۆ تۆمارکردنی تورنمنت</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer"><div class="container"><p>© 2026 PUBG RECRUIT. All rights reserved.</p></div></footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="/js/main.js"></script>
+  <script>
+  function downloadAsImage() {
+    const el = document.getElementById('leaderboard-capture');
+    if (!el) return;
+    const wrapper = document.createElement('div');
+    wrapper.style.cssText = 'padding:24px;background:#0a0a0f;border-radius:12px;';
+    const clone = el.cloneNode(true);
+    wrapper.appendChild(clone);
+    document.body.appendChild(wrapper);
+
+    html2canvas(wrapper, {
+      backgroundColor: '#0a0a0f',
+      scale: 2,
+      useCORS: true,
+      allowTaint: false,
+      logging: false
+    }).then(canvas => {
+      const link = document.createElement('a');
+      link.download = 'pubg-leaderboard.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      document.body.removeChild(wrapper);
+    }).catch(() => {
+      document.body.removeChild(wrapper);
+      alert('Could not generate image. Try using screenshot instead.');
+    });
+  }
+  </script>
+</body>
+</html>
