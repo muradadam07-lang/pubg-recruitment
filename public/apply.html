@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MASK TEAM PUBG - داواکاری</title>
+<link rel="icon" type="image/svg+xml" href="/images/Mask.svg">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Space+Grotesk:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+<style>
+.form-container{max-width:700px;margin:40px auto;padding:40px;background:rgba(26,26,40,0.8);border:1px solid var(--border);border-radius:16px;backdrop-filter:blur(10px)}
+.form-group{margin-bottom:18px}
+.form-group label{display:block;margin-bottom:6px;color:var(--text-secondary);font-size:0.9rem}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:12px 15px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:8px;color:#fff;font-family:inherit;font-size:0.95rem;transition:border-color .3s}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--accent)}
+.form-group textarea{min-height:100px;resize:vertical}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.error-msg{background:rgba(255,50,50,0.15);border:1px solid rgba(255,50,50,0.3);color:#ff6b6b;padding:12px 18px;border-radius:8px;margin-bottom:18px;display:none}
+.btn-primary-submit{width:100%;padding:14px;font-size:1rem;margin-top:10px}
+@media(max-width:600px){.form-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="canvas-container"></div>
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="/" class="nav-logo"><img src="/images/Mask.svg" alt="MASK TEAM"></a>
+    <ul class="nav-links">
+      <li><a href="/">ماڵەوە</a></li>
+      <li><a href="/apply">داواکاری</a></li>
+      <li><a href="/calculate">حسابکەر</a></li>
+      <li><a href="/videos">ڤیدیۆ</a></li>
+      <li><a href="/staff">ستاف</a></li>
+      <li><a href="/status">باری داواکاری</a></li>
+      <li><a href="/login" class="nav-cta">چوونەژوورەوە</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="nav-overlay" id="navOverlay"></div>
+
+<div class="page-wrapper">
+  <div class="section-header" style="padding-top:40px">
+    <div class="results-badge" style="margin-bottom:12px">MASK TEAM PUBG</div>
+    <h1>داواکاری <span class="accent">بەشداری</span></h1>
+    <p>فۆرمی خوارەوە پڕبکەوە بۆ ئەوەی ببیت بە ئەندامی تیم</p>
+  </div>
+
+  <div class="form-container">
+    <div class="error-msg" id="errorMsg"></div>
+    <form id="applyForm">
+      <div class="form-row">
+        <div class="form-group"><label>ناو</label><input type="text" name="name" required></div>
+        <div class="form-group"><label>ئیمەیل</label><input type="email" name="email" required></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>ژمارەی مۆبایل</label><input type="tel" name="phone" required></div>
+        <div class="form-group"><label>IGN (ناوی یاری)</label><input type="text" name="ign" required></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>PUBG ID</label><input type="text" name="pubg_id" required></div>
+        <div class="form-group"><label>ڕۆڵ</label>
+          <select name="role" required>
+            <option value="">هەڵبژێرە</option>
+            <option value="Assaulter">هێرشبەر</option>
+            <option value="Support">پشتگیر</option>
+            <option value="Sniper">سنایپەر</option>
+            <option value="IGL">ڕابەر</option>
+            <option value="Flex">گەشتیار</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>تایبەتمەندی</label>
+          <select name="tier" required>
+            <option value="">هەڵبژێرە</option>
+            <option value="Bronze">برۆنز</option>
+            <option value="Silver">سلیڤەر</option>
+            <option value="Gold">گۆڵد</option>
+            <option value="Platinum">پلاتینۆم</option>
+            <option value="Diamond">دایامۆند</option>
+            <option value="Master">ماستەر</option>
+            <option value="Conqueror">کۆنکێرەر</option>
+          </select>
+        </div>
+        <div class="form-group"><label>K/D</label><input type="number" step="0.01" name="kd"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>ژمارەی بردەوە</label><input type="number" name="wins"></div>
+        <div class="form-group"><label>ئەزموون</label>
+          <select name="experience">
+            <option value="">هەڵبژێرە</option>
+            <option value="Beginner">دەستپێکەر</option>
+            <option value="Intermediate">ناوەند</option>
+            <option value="Advanced">پێشکەوتوو</option>
+            <option value="Pro">پڕۆ</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group"><label>سەربارە (CV / نامە)</label><input type="file" name="cv" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"></div>
+      <div class="form-group"><label>زیاتر باسی خۆت بکە</label><textarea name="about"></textarea></div>
+      <button type="submit" class="btn btn-primary btn-primary-submit tilt-3d">ناردنی داواکاری</button>
+    </form>
+  </div>
+</div>
+
+<footer class="footer"><p>© 2026 MASK TEAM - هەموو مافەکان پارێزراون</p></footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="/js/main.js"></script>
+<script>
+document.getElementById('applyForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const fd = new FormData(this);
+  try {
+    const r = await fetch('/api/apply', { method: 'POST', body: fd });
+    const d = await r.json();
+    if (d.success) window.location.href = '/success';
+    else { document.getElementById('errorMsg').textContent = d.error; document.getElementById('errorMsg').style.display = 'block'; }
+  } catch { document.getElementById('errorMsg').textContent = 'هەڵەیەک ڕوویدا'; document.getElementById('errorMsg').style.display = 'block'; }
+});
+</script>
+</body>
+</html>

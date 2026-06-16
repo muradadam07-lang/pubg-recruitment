@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MASK TEAM - وردبینی تورنمنت</title>
+<link rel="icon" type="image/svg+xml" href="/images/Mask.svg">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Space+Grotesk:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+<style>
+.admin-bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;align-items:center}
+.admin-bar a{font-size:0.85rem}
+.panel{background:rgba(26,26,40,0.7);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:20px;max-width:600px}
+.panel .row{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.panel input,.panel select{padding:8px 12px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:6px;color:#fff;font-family:inherit;font-size:0.85rem}
+.panel input:focus,.panel select:focus{outline:none;border-color:var(--accent)}
+.panel textarea{width:100%;min-height:100px;padding:10px;background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:6px;color:#fff;font-family:monospace;font-size:0.85rem;resize:vertical}
+.panel h4{margin:0 0 10px;font-family:var(--font-display)}
+.liqui-table-wrap{overflow-x:auto;border-radius:12px;border:1px solid var(--border);margin-top:10px}
+.liqui-table{width:100%;border-collapse:collapse;background:linear-gradient(180deg,rgba(26,26,40,0.95),rgba(15,15,30,0.98));font-size:0.85rem}
+.liqui-table th{padding:10px 8px;text-align:center;background:rgba(0,0,0,0.4);border-bottom:2px solid var(--border);color:var(--text-secondary);font-weight:700;font-size:0.75rem}
+.liqui-table td{padding:8px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.04)}
+.col-rank{width:40px}.col-team{text-align:right!important;min-width:120px}
+.col-game{width:70px}.col-kills{width:50px}.col-total{width:70px}
+.rank-num{display:inline-flex;width:24px;height:24px;align-items:center;justify-content:center;border-radius:50%;font-weight:900;font-size:0.8rem;background:rgba(255,255,255,0.05)}
+.rank-num.rank-top{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}
+.row-gold{background:rgba(255,215,0,0.06)!important}
+.row-silver{background:rgba(192,192,192,0.04)!important}
+.row-bronze{background:rgba(205,127,50,0.03)!important}
+.team-name{font-weight:700;font-size:0.9rem;font-family:var(--font-display)}
+.game-result{display:flex;flex-direction:column;align-items:center;gap:1px}
+.g-placement{font-weight:900;font-size:0.8rem;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.p-1{background:linear-gradient(135deg,#ffd700,#ffed4a);color:#000}
+.p-2{background:linear-gradient(135deg,#c0c0c0,#e8e8e8);color:#000}
+.p-3{background:linear-gradient(135deg,#cd7f32,#daa06d);color:#000}
+.p-4{background:rgba(0,255,136,0.15);color:#0f6}
+.g-kills{font-size:0.65rem;color:#ff6b6b;font-weight:600}
+.kills-num{font-weight:700;color:#ff6b6b;font-size:0.9rem}
+.pts-num{font-weight:900;font-size:1rem;font-family:var(--font-display)}
+.pts-num.pts-first{color:var(--accent)}
+.bar-wrap{width:100%;height:3px;background:rgba(255,255,255,0.08);border-radius:2px;margin-top:4px;overflow:hidden}
+.bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:2px}
+.delete-btn{color:#dc3545;cursor:pointer;font-size:0.75rem;opacity:0.4;transition:opacity .3s}
+.delete-btn:hover{opacity:1}
+@media(max-width:600px){.liqui-table{font-size:0.75rem}.liqui-table td,.liqui-table th{padding:5px 3px}.col-team{min-width:90px}.col-game{width:50px}}
+</style>
+</head>
+<body>
+<div id="canvas-container"></div>
+<nav class="navbar"><div class="nav-container"><a href="/" class="nav-logo"><img src="/images/Mask.svg" alt="MASK TEAM"></a><ul class="nav-links"><li><a href="/">ماڵەوە</a></li><li><a href="/apply">داواکاری</a></li><li><a href="/calculate">حسابکەر</a></li><li><a href="/videos">ڤیدیۆ</a></li><li><a href="/staff">ستاف</a></li><li><a href="/login" class="nav-cta">چوونەژوورەوە</a></li></ul><button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button></div></nav>
+<div class="nav-overlay" id="navOverlay"></div>
+<div class="page-wrapper">
+  <div class="section-header" style="padding-top:30px">
+    <div class="admin-bar">
+      <a href="/dashboard/tournaments" class="btn btn-secondary tilt-3d" style="font-size:0.85rem">← تورنمنتەکان</a>
+      <span style="color:var(--text-secondary);font-size:0.85rem" id="tournamentMeta"></span>
+      <button class="btn btn-secondary tilt-3d" onclick="finishTournament()" id="finishBtn" style="font-size:0.85rem;background:rgba(108,117,125,0.2);border-color:rgba(108,117,125,0.3)">تەواوکردن</button>
+    </div>
+    <h1 id="tournamentName"></h1>
+    <div class="panel">
+      <h4>زیادکردنی ئەنجام</h4>
+      <div class="row">
+        <select id="teamSelect" style="flex:1"><option value="">تیم هەڵبژێرە</option></select>
+        <select id="gameNum"><option value="1">یاری 1</option>
+          <option value="2">یاری 2</option><option value="3">یاری 3</option>
+          <option value="4">یاری 4</option><option value="5">یاری 5</option>
+          <option value="6">یاری 6</option></select>
+        <input type="number" id="placementInput" placeholder="TOP" style="width:70px" min="1" max="99">
+        <input type="number" id="killsInput" placeholder="💀" style="width:60px" min="0">
+        <button class="btn btn-primary tilt-3d" onclick="addResult()" style="font-size:0.85rem">زیادکردن</button>
+      </div>
+    </div>
+    <div class="panel">
+      <h4>بەشەیی (Batch Import)</h4>
+      <textarea id="batchData" placeholder="IGN (TOP#) (TOP#) kill (K1-K2)"></textarea>
+      <button class="btn btn-primary tilt-3d" onclick="batchImport()" style="font-size:0.85rem;margin-top:8px">هاوردەکردن</button>
+    </div>
+    <p style="color:var(--text-secondary);font-size:0.85rem;margin:10px 0">📊 Points = <strong style="color:var(--accent)">Placement</strong> (1st=10, 2nd=6, 3rd=5, 4th=4, 5th=3, 6th=2, 7th=1, 8th=1) + <strong style="color:var(--accent)">Kills</strong> (1pt each)</p>
+    <div id="resultsTable"></div>
+  </div>
+</div>
+<footer class="footer"><p>© 2026 MASK TEAM</p></footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="/js/main.js"></script>
+<script>
+const tournamentId = window.location.pathname.split('/').pop();
+async function loadData() {
+  try {
+    const s = await (await fetch('/api/session')).json();
+    if (!s.loggedIn) { window.location.href = '/login'; return; }
+    const r = await fetch('/api/tournaments/' + tournamentId);
+    const d = await r.json();
+    if (!d.tournament) { window.location.href = '/dashboard/tournaments'; return; }
+    document.getElementById('tournamentName').innerHTML = `🏆 ${d.tournament.name} <span style="font-size:0.9rem;color:var(--text-secondary);font-weight:400">${d.tournament.status === 'active' ? 'چالاک' : 'تەواو بوو'}</span>`;
+    document.getElementById('tournamentMeta').textContent = `${d.tournament.game_count} یاری • ${d.leaderboard.length} تیم`;
+    document.getElementById('finishBtn').style.display = d.tournament.status === 'active' ? 'inline-block' : 'none';
+    const sel = document.getElementById('teamSelect');
+    sel.innerHTML = '<option value="">تیم هەڵبژێرە</option>' + d.teams.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
+    renderLeaderboard(d.leaderboard);
+  } catch { window.location.href = '/dashboard/tournaments'; }
+}
+function renderLeaderboard(leaderboard) {
+  const el = document.getElementById('resultsTable');
+  if (!leaderboard || leaderboard.length === 0) { el.innerHTML = '<p style="text-align:center;color:var(--text-secondary);padding:30px">هیچ ئەنجامێک نییە</p>'; return; }
+  const maxPts = Math.max(...leaderboard.map(x => x.total_points));
+  const gc = Math.max(...leaderboard.map(x => x.games_played), 1);
+  let html = '<div class="liqui-table-wrap"><table class="liqui-table"><thead><tr><th class="col-rank">#</th><th class="col-team">تیم</th>';
+  for (let i = 0; i < gc; i++) html += `<th class="col-game">یاری ${i+1}</th>`;
+  html += '<th class="col-kills">💀</th><th class="col-total">خاڵ</th></tr></thead><tbody>';
+  leaderboard.forEach((t, i) => {
+    const cls = i === 0 ? 'row-gold' : i === 1 ? 'row-silver' : i === 2 ? 'row-bronze' : '';
+    const rc = i < 3 ? 'rank-top' : ''; const pc = i === 0 ? 'pts-first' : '';
+    html += `<tr class="${cls}"><td class="col-rank"><span class="rank-num ${rc}">${i+1}</span></td>
+      <td class="col-team"><div class="team-name">${t.name}</div></td>`;
+    if (t.games_played > 0) {
+      for (let g = 0; g < gc; g++) { html += '<td class="col-game">-</td>'; }
+    }
+    html += `<td class="col-kills"><span class="kills-num">${t.total_kills}</span></td>
+      <td class="col-total"><span class="pts-num ${pc}">${t.total_points}</span><div class="bar-wrap"><div class="bar-fill" style="width:${maxPts ? (t.total_points/maxPts*100) : 0}%"></div></div></td></tr>`;
+  });
+  html += '</tbody></table></div>';
+  el.innerHTML = html;
+}
+async function addResult() {
+  const team_id = document.getElementById('teamSelect').value;
+  const game_number = parseInt(document.getElementById('gameNum').value);
+  const placement = parseInt(document.getElementById('placementInput').value);
+  const kills = parseInt(document.getElementById('killsInput').value) || 0;
+  if (!team_id || !placement) return;
+  await fetch('/api/tournaments/' + tournamentId + '/add-result', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ team_id, game_number, placement, kills }) });
+  document.getElementById('placementInput').value = ''; document.getElementById('killsInput').value = '';
+  loadData();
+}
+async function batchImport() {
+  const data = document.getElementById('batchData').value;
+  if (!data.trim()) return;
+  await fetch('/api/tournaments/' + tournamentId + '/batch', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ batch_data: data }) });
+  document.getElementById('batchData').value = '';
+  loadData();
+}
+async function finishTournament() {
+  if (!confirm('دڵنیایت دەتەوێت ئەم تورنمنتە تەواو بکەیت؟')) return;
+  await fetch('/api/tournaments/' + tournamentId + '/finish', { method: 'POST', headers: {'Content-Type':'application/json'} });
+  loadData();
+}
+loadData();
+</script>
+</body>
+</html>

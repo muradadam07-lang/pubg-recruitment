@@ -1,22 +1,17 @@
 {
-  "name": "pubg-recruitment",
-  "version": "1.0.0",
-  "description": "PUBG Player Recruitment Platform",
-  "main": "server.js",
-  "engines": {
-    "node": ">=18"
-  },
-  "scripts": {
-    "start": "node server.js",
-    "dev": "node --watch server.js"
-  },
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "ejs": "^3.1.10",
-    "express": "^4.21.0",
-    "express-session": "^1.18.0",
-    "multer": "^1.4.5-lts.1",
-    "sql.js": "^1.14.1",
-    "yt-search": "^2.13.1"
-  }
+"name": "pubg-recruitment",
+"version": "1.0.0",
+"main": "server.js",
+"scripts": {
+"start": "node server.js"
+},
+"dependencies": {
+"bcryptjs": "^3.0.2",
+
+"express": "^5.1.0",
+"express-session": "^1.18.1",
+"multer": "^2.0.2",
+"sql.js": "^1.13.0",
+"yt-search": "^2.13.1"
+}
 }

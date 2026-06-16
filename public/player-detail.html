@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MASK TEAM - وردبینی یاریزان</title>
+<link rel="icon" type="image/svg+xml" href="/images/Mask.svg">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+<style>
+.detail-grid{max-width:700px;margin:30px auto;padding:0 20px}
+.detail-card{background:rgba(26,26,40,0.8);border:1px solid var(--border);border-radius:16px;padding:30px;backdrop-filter:blur(10px)}
+.detail-card h2{margin-bottom:20px;font-family:var(--font-display)}
+.info-table{width:100%}
+.info-table td{padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:0.9rem}
+.info-table td:first-child{color:var(--text-secondary);width:130px}
+.reply-box{background:rgba(0,0,0,0.2);border-radius:12px;padding:20px;margin-top:20px}
+.reply-box textarea{width:100%;min-height:80px;padding:12px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:8px;color:#fff;font-family:inherit;font-size:0.9rem;resize:vertical;margin-bottom:10px}
+.reply-box textarea:focus{outline:none;border-color:var(--accent)}
+.reply-item{background:rgba(0,0,0,0.15);border-radius:10px;padding:15px;margin-bottom:10px}
+.reply-item .admin{color:var(--accent);font-weight:700;font-size:0.85rem}
+.reply-item .date{color:var(--text-secondary);font-size:0.75rem}
+.reply-item .msg{margin-top:6px;font-size:0.9rem}
+.action-bar{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.action-btn{padding:10px 22px;border-radius:8px;border:0;font-size:0.85rem;font-weight:700;cursor:pointer;transition:all .3s}
+.action-btn.approve{background:rgba(25,135,84,0.2);color:#198754}
+.action-btn.reject{background:rgba(220,53,69,0.2);color:#dc3545}
+.action-btn.review{background:rgba(13,202,240,0.2);color:#0dcaf0}
+.action-btn:hover{filter:brightness(1.2)}
+.back-link{color:var(--text-secondary);text-decoration:none;font-size:0.85rem;display:inline-block;margin-bottom:10px}
+.back-link:hover{color:var(--accent)}
+</style>
+</head>
+<body>
+<div id="canvas-container"></div>
+<nav class="navbar"><div class="nav-container"><a href="/" class="nav-logo"><img src="/images/Mask.svg" alt="MASK TEAM"></a><ul class="nav-links"><li><a href="/">ماڵەوە</a></li><li><a href="/apply">داواکاری</a></li><li><a href="/calculate">حسابکەر</a></li><li><a href="/videos">ڤیدیۆ</a></li><li><a href="/staff">ستاف</a></li><li><a href="/login" class="nav-cta">چوونەژوورەوە</a></li></ul><button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button></div></nav>
+<div class="nav-overlay" id="navOverlay"></div>
+<div class="page-wrapper">
+  <div class="detail-grid">
+    <a href="/dashboard" class="back-link">← گەڕانەوە بۆ داشبۆرد</a>
+    <div class="detail-card" id="playerCard">
+      <h2 id="playerName"></h2>
+      <div class="action-bar" id="actionBar"></div>
+      <table class="info-table"><tbody id="infoBody"></tbody></table>
+    </div>
+    <div class="reply-box" style="margin-top:20px">
+      <h4 style="margin-bottom:12px;color:var(--text-secondary)">ناردینی وەڵام</h4>
+      <textarea id="replyMsg" placeholder="وەڵامەکەت بنووسە..."></textarea>
+      <button class="btn btn-primary tilt-3d" onclick="sendReply()" style="font-size:0.85rem">ناردن</button>
+    </div>
+    <div id="repliesSection" style="margin-top:20px"><h4 style="color:var(--text-secondary);margin-bottom:12px">وەڵامەکان</h4><div id="repliesList"></div></div>
+  </div>
+</div>
+<footer class="footer"><p>© 2026 MASK TEAM</p></footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="/js/main.js"></script>
+<script>
+const playerId = window.location.pathname.split('/').pop();
+async function loadPlayer() {
+  try {
+    const s = await (await fetch('/api/session')).json();
+    if (!s.loggedIn) { window.location.href = '/login'; return; }
+    const r = await fetch('/api/players/' + playerId);
+    const d = await r.json();
+    if (!d.player) { window.location.href = '/dashboard'; return; }
+    renderPlayer(d.player, d.replies);
+  } catch { window.location.href = '/dashboard'; }
+}
+function renderPlayer(p, replies) {
+  const statusMap = {pending:'چاوەڕوانی',reviewed:'پێداچوونەوە',accepted:'قبوڵ کراو',rejected:'ڕەت کراو'};
+  document.getElementById('playerName').innerHTML = `${p.name} <span style="font-size:0.8rem;color:var(--text-secondary);font-weight:400">(${p.ign})</span>`;
+  document.getElementById('infoBody').innerHTML = `
+    <tr><td>ئیمەیل</td><td>${p.email}</td></tr>
+    <tr><td>مۆبایل</td><td>${p.phone}</td></tr>
+    <tr><td>IGN</td><td><strong>${p.ign}</strong></td></tr>
+    <tr><td>PUBG ID</td><td>${p.pubg_id}</td></tr>
+    <tr><td>ڕۆڵ</td><td>${p.role}</td></tr>
+    <tr><td>تایبەتمەندی</td><td>${p.tier}</td></tr>
+    <tr><td>K/D</td><td>${p.kd || '-'}</td></tr>
+    <tr><td>بردەوە</td><td>${p.wins || '-'}</td></tr>
+    <tr><td>ئەزموون</td><td>${p.experience || '-'}</td></tr>
+    <tr><td>بارودۆخ</td><td><span class="status-badge s-${p.status}">${statusMap[p.status]}</span></td></tr>
+    <tr><td>ڕێکەوت</td><td>${new Date(p.created_at).toLocaleDateString('ku')}</td></tr>
+    ${p.about ? `<tr><td>سەربارە</td><td>${p.about}</td></tr>` : ''}
+    ${p.cv_path ? `<tr><td>CV</td><td><a href="/uploads/${p.cv_path}" target="_blank" style="color:var(--accent)">بینینی پەڕگە</a></td></tr>` : ''}`;
+  const ab = document.getElementById('actionBar');
+  if (p.status !== 'accepted') ab.innerHTML += `<button class="action-btn approve" onclick="setStatus('accepted')">قبوڵ کردن</button>`;
+  if (p.status !== 'rejected') ab.innerHTML += `<button class="action-btn reject" onclick="setStatus('rejected')">ڕەت کردن</button>`;
+  if (p.status !== 'reviewed') ab.innerHTML += `<button class="action-btn review" onclick="setStatus('reviewed')">پێداچوونەوە</button>`;
+  const rl = document.getElementById('repliesList');
+  if (replies && replies.length > 0) rl.innerHTML = replies.map(r => `<div class="reply-item"><span class="admin">${r.admin_name}</span> <span class="date">${new Date(r.created_at).toLocaleDateString('ku')}</span><div class="msg">${r.message}</div></div>`).join('');
+  else rl.innerHTML = '<p style="color:var(--text-secondary);font-size:0.85rem">هیچ وەڵامێک نییە</p>';
+}
+async function setStatus(status) {
+  await fetch('/api/players/' + playerId + '/status', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ status }) });
+  loadPlayer();
+}
+async function sendReply() {
+  const msg = document.getElementById('replyMsg').value.trim();
+  if (!msg) return;
+  await fetch('/api/players/' + playerId + '/reply', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ message: msg }) });
+  document.getElementById('replyMsg').value = '';
+  loadPlayer();
+}
+loadPlayer();
+</script>
+</body>
+</html>

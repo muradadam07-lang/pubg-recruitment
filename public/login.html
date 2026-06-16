@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MASK TEAM PUBG - چوونەژوورەوە</title>
+<link rel="icon" type="image/svg+xml" href="/images/Mask.svg">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+<style>
+.login-box{max-width:400px;margin:80px auto;padding:40px;background:rgba(26,26,40,0.8);border:1px solid var(--border);border-radius:16px;backdrop-filter:blur(10px);text-align:center}
+.login-box h1{margin-bottom:8px}.login-box p{color:var(--text-secondary);margin-bottom:25px;font-size:0.9rem}
+.form-group{margin-bottom:15px;text-align:right}
+.form-group input{width:100%;padding:12px 15px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:8px;color:#fff;font-family:inherit;font-size:0.95rem;transition:border-color .3s}
+.form-group input:focus{outline:none;border-color:var(--accent)}
+.error-msg{color:#ff6b6b;margin-bottom:15px;padding:10px;background:rgba(255,50,50,0.1);border-radius:8px;display:none}
+</style>
+</head>
+<body>
+<div id="canvas-container"></div>
+<nav class="navbar"><div class="nav-container"><a href="/" class="nav-logo"><img src="/images/Mask.svg" alt="MASK TEAM"></a><ul class="nav-links"><li><a href="/">ماڵەوە</a></li><li><a href="/apply">داواکاری</a></li><li><a href="/calculate">حسابکەر</a></li><li><a href="/videos">ڤیدیۆ</a></li><li><a href="/staff">ستاف</a></li><li><a href="/status">باری داواکاری</a></li><li><a href="/login" class="nav-cta">چوونەژوورەوە</a></li></ul><button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button></div></nav>
+<div class="nav-overlay" id="navOverlay"></div>
+<div class="page-wrapper">
+  <div class="login-box">
+    <h1>چوونەژوورەوەی <span class="accent">ئەدمین</span></h1>
+    <p>تەنها بۆ ئەندامانی ستاف</p>
+    <div class="error-msg" id="errorMsg"></div>
+    <form id="loginForm">
+      <div class="form-group"><input type="text" name="username" placeholder="ناوی بەکارهێنەر" required></div>
+      <div class="form-group"><input type="password" name="password" placeholder="وشەی نهێنی" required></div>
+      <button type="submit" class="btn btn-primary tilt-3d" style="width:100%;padding:12px;font-size:1rem">چوونەژوورەوە</button>
+    </form>
+  </div>
+</div>
+<footer class="footer"><p>© 2026 MASK TEAM</p></footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="/js/main.js"></script>
+<script>
+document.getElementById('loginForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  try {
+    const r = await fetch('/api/login', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ username: this.username.value, password: this.password.value }) });
+    const d = await r.json();
+    if (d.success) window.location.href = '/dashboard';
+    else { document.getElementById('errorMsg').textContent = d.error; document.getElementById('errorMsg').style.display = 'block'; }
+  } catch { document.getElementById('errorMsg').textContent = 'هەڵەیەک ڕوویدا'; document.getElementById('errorMsg').style.display = 'block'; }
+});
+</script>
+</body>
+</html>
