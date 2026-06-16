@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ckb">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>داواکاری - پابجی ڕیکرویت</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="particles"></div>
+  <canvas id="scene-3d"></canvas>
+  <div class="nav-overlay" id="navOverlay"></div>
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="logo">
+        <img src="/images/Mask.svg" alt="MASK TEAM" height="45">
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links" id="navLinks">
+        <a href="/">سەرەکی</a>
+        <a href="/calculate">📊 حسابکەر</a>
+        <a href="/videos">🎬 ڤیدیۆ</a>
+        <a href="/apply" class="active">داواکاری بنێرە</a>
+        <a href="/status">دۆخی ببینە</a>
+        <a href="/staff">ستاف</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="form-section">
+    <div class="container">
+      <div class="form-container perspective-container">
+        <div class="form-header">
+          <h1>داواکارییەکەت <span class="accent">بنێرە</span></h1>
+          <p>فۆرمی خوارەوە پڕبکەرەوە بۆ پێوەندیکردن بە تیپی پرۆفیشناڵی پابجی.</p>
+        </div>
+
+        <% if (typeof error !== 'undefined' && error) { %>
+          <div class="alert alert-error"><%= error %></div>
+        <% } %>
+
+        <form action="/apply" method="POST" enctype="multipart/form-data" class="apply-form" id="applyForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">ناوی تەواو *</label>
+              <input type="text" id="name" name="name" required placeholder="محەممەد ئەحمەد">
+            </div>
+            <div class="form-group">
+              <label for="email">ئیمەیل *</label>
+              <input type="email" id="email" name="email" required placeholder="mohammad@example.com">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="phone">تەلەفون *</label>
+              <input type="tel" id="phone" name="phone" required placeholder="+٩٦٤ ٧٥٠ ٠٠٠ ٠٠٠٠">
+            </div>
+            <div class="form-group">
+              <label for="ign">ناوی یاری (IGN) *</label>
+              <input type="text" id="ign" name="ign" required placeholder="PlayerIGN">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="pubg_id">ئایدی پابجی *</label>
+              <input type="text" id="pubg_id" name="pubg_id" required placeholder="١٢٣٤٥٦٧٨٩٠">
+            </div>
+            <div class="form-group">
+              <label for="role">ڕۆڵی دڵخواز *</label>
+              <select id="role" name="role" required>
+                <option value="">ڕۆڵ هەڵبژێرە</option>
+                <option value="Assault">هێرشبەر</option>
+                <option value="Support">پشتیوان</option>
+                <option value="Sniper">سنایپەر</option>
+                <option value="IGL">IGL (ڕابەری تیپ)</option>
+                <option value="Flex">Flex</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="tier">ئاستی ئێستا *</label>
+              <select id="tier" name="tier" required>
+                <option value="">ئاست هەڵبژێرە</option>
+                <option value="Bronze">برۆنز</option>
+                <option value="Silver">سڵڤەر</option>
+                <option value="Gold">گۆڵد</option>
+                <option value="Platinum">پلاتینۆم</option>
+                <option value="Diamond">دایامۆند</option>
+                <option value="Crown">کراون</option>
+                <option value="Ace">ئەیس</option>
+                <option value="Conqueror">کۆنکوێرەر</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="kd">ڕێژەی KD</label>
+              <input type="number" step="0.1" id="kd" name="kd" placeholder="٣.٥">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="wins">بردنەوەکان (وەرز)</label>
+              <input type="number" id="wins" name="wins" placeholder="٥٠">
+            </div>
+            <div class="form-group">
+              <label for="experience">ئەزموونی پێشبڕکێ</label>
+              <select id="experience" name="experience">
+                <option value="">هەڵبژێرە</option>
+                <option value="None">نییە</option>
+                <option value="Scrims">تەنها سکریم</option>
+                <option value="Grassroot">پاڵەوانێتی خۆماڵی</option>
+                <option value="Regional">پاڵەوانێتی ناوچەیی</option>
+                <option value="National">پاڵەوانێتی نیشتمانی</option>
+                <option value="International">پاڵەوانێتی نێودەوڵەتی</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="about">دەربارەی تۆ</label>
+            <textarea id="about" name="about" rows="4" placeholder="باسی شێوازی یاریکردنت، دەستکەوتەکانت و بۆچی دەتەوێت پێوەندی بکەیت..."></textarea>
+          </div>
+
+          <div class="form-group file-upload">
+            <label for="cv">سیڤی باربکە</label>
+            <div class="file-drop-zone" id="fileDropZone">
+              <div class="file-icon">📄</div>
+              <p>سیڤییەکەت لێرە ڕابکێشە یان <span class="browse-text">هەڵبژێرە</span></p>
+              <span class="file-hint">پشتیوانی لە PDF, DOC, DOCX, PNG, JPG (زۆرترین ٥MB)</span>
+              <input type="file" id="cv" name="cv" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg">
+            </div>
+            <div class="file-preview" id="filePreview" style="display:none;">
+              <span class="file-name" id="fileName"></span>
+              <button type="button" class="file-remove" id="fileRemove">✕</button>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary tilt-3d btn-submit">
+            <span>داواکارییەکە بنێرە</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <p>© ٢٠٢٦ PUBG RECRUIT. هەموو مافەکان پارێزراون.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="/js/main.js"></script>
+</body>
+</html>

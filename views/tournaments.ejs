@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ckb">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تورنمنتەکان - پابجی ڕیکرویت</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-page">
+  <div class="particles"></div>
+  <canvas id="scene-3d"></canvas>
+  <div class="battle-bg"><div class="battle-grid"></div><div class="scan-line"></div></div>
+  <div class="nav-overlay" id="navOverlay"></div>
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="logo"><img src="/images/Mask.svg" alt="MASK TEAM" height="45"></a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links" id="navLinks">
+        <span class="admin-greeting">بەخێربێیت، <%= adminName %></span>
+        <a href="/dashboard">داواکارییەکان</a>
+        <a href="/dashboard/tournaments" class="active nav-results">🏆 تورنمنتەکان</a>
+        <a href="/logout" class="btn-logout">دەرچوون</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="results-page-section">
+    <div class="container">
+      <div class="results-header">
+        <div class="results-title-group">
+          <div class="results-badge">TOURNAMENTS</div>
+          <h1>بەڕێوەبردنی <span class="accent">تورنمنتەکان</span></h1>
+          <p>دروستکردن و بەڕێوەبردنی تورنمنت و تۆماری ئەنجامەکان</p>
+        </div>
+        <button class="btn btn-primary tilt-3d" onclick="document.getElementById('createModal').classList.add('active')">
+          <span>+ تورنمنتی نوێ</span>
+        </button>
+      </div>
+
+      <div class="leaderboard-section">
+        <% if (tournaments.length === 0) { %>
+          <div style="text-align:center;padding:60px 20px;color:var(--text-secondary);background:var(--bg-card);border-radius:12px;border:1px solid var(--border);">
+            <div style="font-size:3rem;margin-bottom:15px;">🏆</div>
+            <p style="font-size:1.1rem;">هێشتا هیچ تورنمنتێک دروست نەکراوە</p>
+            <p>کرتە بکە لە "+ تورنمنتی نوێ" بۆ دروستکردنی یەکەم تورنمنت</p>
+          </div>
+        <% } else { %>
+          <div class="leaderboard-grid">
+            <% tournaments.forEach(function(t) { %>
+              <a href="/dashboard/tournaments/<%= t.id %>" class="lb-card tilt-3d-glow" style="text-decoration:none;">
+                <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:12px;">
+                  <div class="lb-rank" style="font-size:1.8rem;">🏆</div>
+                  <span class="badge badge-<%= t.status === 'active' ? 'pending' : 'reviewed' %>">
+                    <%= t.status === 'active' ? 'چالاک' : 'تەواو بوو' %>
+                  </span>
+                </div>
+                <div class="lb-info">
+                  <span class="lb-ign" style="font-size:1.2rem;"><%= t.name %></span>
+                </div>
+                <div class="lb-stats">
+                  <div class="lb-stat">
+                    <span class="lb-stat-val"><%= t.game_count %></span>
+                    <span class="lb-stat-lbl">یاری</span>
+                  </div>
+                  <div class="lb-stat">
+                    <span class="lb-stat-val"><%= t.team_count %></span>
+                    <span class="lb-stat-lbl">تیم</span>
+                  </div>
+                  <div class="lb-stat">
+                    <span class="lb-stat-val"><%= t.result_count %></span>
+                    <span class="lb-stat-lbl">ئەنجام</span>
+                  </div>
+                </div>
+                <div style="font-size:0.8rem;color:var(--text-secondary);margin-top:8px;">
+                  <%= new Date(t.created_at).toLocaleDateString('ckb') %>
+                </div>
+              </a>
+            <% }); %>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </section>
+
+  <!-- Create Modal -->
+  <div class="modal" id="createModal">
+    <div class="modal-overlay" onclick="document.getElementById('createModal').classList.remove('active')"></div>
+    <div class="modal-content tilt-3d-glow">
+      <button class="modal-close" onclick="document.getElementById('createModal').classList.remove('active')">✕</button>
+      <h2>تورنمنتی <span class="accent">نوێ</span></h2>
+      <form action="/dashboard/tournaments/create" method="POST">
+        <div class="form-group">
+          <label>ناوی تورنمنت</label>
+          <input type="text" name="name" required placeholder="PMPL Season 4 / Weekly Scrim #1">
+        </div>
+        <div class="form-group">
+          <label>ژمارەی یارییەکان (Games)</label>
+          <input type="number" name="game_count" value="1" min="1" max="20">
+        </div>
+        <button type="submit" class="btn btn-primary btn-full">دروستکردن</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="/js/main.js"></script>
+</body>
+</html>
